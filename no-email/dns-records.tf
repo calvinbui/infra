@@ -27,3 +27,14 @@ resource "cloudflare_dns_record" "dmarc" {
   name    = "_dmarc.${each.value.result[0].name}"
   ttl     = 1
 }
+
+resource "cloudflare_dns_record" "mx_20" {
+  for_each = data.cloudflare_zones.main
+
+  zone_id  = each.value.result[0].id
+  type     = "MX"
+  content  = "."
+  name     = each.value.result[0].name
+  priority = 0
+  ttl      = 1
+}
