@@ -40,6 +40,8 @@ resource "oci_containerengine_node_pool" "main" {
       !strcontains(s.source_name, "GPU") &&
       strcontains(s.source_name, "OKE-${trimprefix(oci_containerengine_cluster.main.kubernetes_version, "v")}")
     ])[0], null)
+
+    boot_volume_size_in_gbs = 100
   }
 }
 
