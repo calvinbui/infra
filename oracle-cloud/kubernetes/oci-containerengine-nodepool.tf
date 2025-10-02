@@ -18,7 +18,7 @@ resource "oci_containerengine_node_pool" "main" {
 
     node_pool_pod_network_option_details {
       cni_type          = oci_containerengine_cluster.main.cluster_pod_network_options[0].cni_type
-      pod_subnet_ids    = [oci_core_subnet.private.id]
+      pod_subnet_ids    = [oci_core_subnet.pods.id]
       max_pods_per_node = 31
     }
 

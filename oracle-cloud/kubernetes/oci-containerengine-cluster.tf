@@ -16,12 +16,12 @@ resource "oci_containerengine_cluster" "main" {
   vcn_id = oci_core_vcn.main.id
 
   endpoint_config {
-    subnet_id            = oci_core_subnet.public.id
+    subnet_id            = oci_core_subnet.api_endpoint.id
     is_public_ip_enabled = true
   }
 
   options {
-    service_lb_subnet_ids = [oci_core_subnet.public.id]
+    service_lb_subnet_ids = [oci_core_subnet.lbs.id]
   }
 
   # Other

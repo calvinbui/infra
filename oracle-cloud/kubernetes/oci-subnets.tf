@@ -1,38 +1,55 @@
-########################
-# Private
-########################
-
-resource "oci_core_subnet" "private" {
+resource "oci_core_subnet" "worker_nodes" {
   vcn_id = oci_core_vcn.main.id
 
-  display_name   = "${oci_core_vcn.main.display_name}-private-subnet"
+  display_name   = "${oci_core_vcn.main.display_name}-worker-nodes-subnet"
   compartment_id = oci_core_vcn.main.compartment_id
 
-  cidr_block = cidrsubnets(oci_core_vcn.main.cidr_blocks[0], 1, 1)[0]
+  cidr_block = local.subnets.worker_nodes
 
   route_table_id = oci_core_route_table.natgw.id
 
   prohibit_public_ip_on_vnic = true
 
-  security_list_ids = [
-    oci_core_security_list.private.id,
-    oci_core_security_list.lb.id,
-  ]
+  security_list_ids = [oci_core_security_list.worker_nodes.id]
 }
 
-########################
-# Public
-########################
-
-resource "oci_core_subnet" "public" {
+resource "oci_core_subnet" "api_endpoint" {
   vcn_id = oci_core_vcn.main.id
 
-  display_name   = "${oci_core_vcn.main.display_name}-public-subnet"
+  display_name   = "${oci_core_vcn.main.display_name}-api-endpoint-subnet"
   compartment_id = oci_core_vcn.main.compartment_id
 
-  cidr_block = cidrsubnets(oci_core_vcn.main.cidr_blocks[0], 1, 1)[1]
+  cidr_block = local.subnets.api_endpoint
 
   route_table_id = oci_core_route_table.igw.id
 
-  security_list_ids = [oci_core_security_list.public.id]
+  security_list_ids = [oci_core_security_list.api_endpoint.id]
+}
+
+resource "oci_core_subnet" "lbs" {
+  vcn_id = oci_core_vcn.main.id
+
+  display_name   = "${oci_core_vcn.main.display_name}-lbs-subnet"
+  compartment_id = oci_core_vcn.main.compartment_id
+
+  cidr_block = local.subnets.lbs
+
+  route_table_id = oci_core_route_table.igw.id
+
+  security_list_ids = [oci_core_security_list.lbs.id]
+}
+
+resource "oci_core_subnet" "pods" {
+  vcn_id = oci_core_vcn.main.id
+
+  display_name   = "${oci_core_vcn.main.display_name}-pods-subnet"
+  compartment_id = oci_core_vcn.main.compartment_id
+
+  cidr_block = local.subnets.pods
+
+  route_table_id = oci_core_route_table.natgw.id
+
+  prohibit_public_ip_on_vnic = true
+
+  security_list_ids = [oci_core_security_list.pods.id]
 }
