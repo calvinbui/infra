@@ -1,6 +1,8 @@
 locals {
   name = "k8s"
 
+  nodepool_size = 2
+
   subnets = {
     vcn = "10.127.80.0/21"
 
