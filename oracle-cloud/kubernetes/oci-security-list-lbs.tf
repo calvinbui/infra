@@ -15,16 +15,6 @@ resource "oci_core_security_list" "lbs" {
   }
 
   ingress_security_rules {
-    description = "Load balancer HTTP3"
-    source      = "0.0.0.0/0"
-    protocol    = local.protocol_numbers["UDP"]
-    udp_options {
-      max = 8443
-      min = 8443
-    }
-  }
-
-  ingress_security_rules {
     description = "Load balancer HTTP"
     source      = "0.0.0.0/0"
     protocol    = local.protocol_numbers["TCP"]
