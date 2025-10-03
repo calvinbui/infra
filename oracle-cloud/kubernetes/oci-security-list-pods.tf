@@ -61,7 +61,7 @@ resource "oci_core_security_list" "pods" {
   }
 
   egress_security_rules {
-    description = "Allow pods to communicate with internet"
+    description = "Allow pods to communicate over HTTP"
     destination = "0.0.0.0/0"
     protocol    = local.protocol_numbers["TCP"]
     tcp_options {
@@ -71,7 +71,17 @@ resource "oci_core_security_list" "pods" {
   }
 
   egress_security_rules {
-    description = "Allow pods to communicate with internet"
+    description = "Allow pods to communicate with DNS"
+    destination = "0.0.0.0/0"
+    protocol    = local.protocol_numbers["UDP"]
+    udp_options {
+      min = 53
+      max = 53
+    }
+  }
+
+  egress_security_rules {
+    description = "Allow pods to communicate with DNS"
     destination = "0.0.0.0/0"
     protocol    = local.protocol_numbers["TCP"]
     tcp_options {
@@ -81,12 +91,22 @@ resource "oci_core_security_list" "pods" {
   }
 
   egress_security_rules {
-    description = "Allow pods to communicate with internet"
+    description = "Allow pods to communicate over HTTPS"
     destination = "0.0.0.0/0"
     protocol    = local.protocol_numbers["TCP"]
     tcp_options {
       min = 443
       max = 443
+    }
+  }
+
+  egress_security_rules {
+    description = "Allow pods to communicate with Plex"
+    destination = "0.0.0.0/0"
+    protocol    = local.protocol_numbers["TCP"]
+    tcp_options {
+      min = 32400
+      max = 32400
     }
   }
 
