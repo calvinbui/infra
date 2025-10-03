@@ -55,6 +55,16 @@ resource "oci_core_security_list" "api_endpoint" {
   }
 
   ingress_security_rules {
+    description = "Bastion access to Kubernetes API endpoint"
+    source      = local.subnets.bastion
+    protocol    = local.protocol_numbers["TCP"]
+    tcp_options {
+      min = 6443
+      max = 6443
+    }
+  }
+
+  ingress_security_rules {
     description = "External access to Kubernetes API endpoint"
     source      = "0.0.0.0/0"
     protocol    = local.protocol_numbers["TCP"]

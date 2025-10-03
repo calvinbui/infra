@@ -53,3 +53,18 @@ resource "oci_core_subnet" "pods" {
 
   security_list_ids = [oci_core_security_list.pods.id]
 }
+
+resource "oci_core_subnet" "bastion" {
+  vcn_id = oci_core_vcn.main.id
+
+  display_name   = "${oci_core_vcn.main.display_name}-bastion-subnet"
+  compartment_id = oci_core_vcn.main.compartment_id
+
+  cidr_block = local.subnets.bastion
+
+  route_table_id = oci_core_route_table.natgw.id
+
+  prohibit_public_ip_on_vnic = true
+
+  security_list_ids = [oci_core_security_list.bastion.id]
+}

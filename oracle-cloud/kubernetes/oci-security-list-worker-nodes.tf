@@ -35,6 +35,16 @@ resource "oci_core_security_list" "worker_nodes" {
   }
 
   ingress_security_rules {
+    description = "Allow inbound SSH traffic to managed nodes"
+    source      = local.subnets.bastion
+    protocol    = local.protocol_numbers["TCP"]
+    tcp_options {
+      min = 22
+      max = 22
+    }
+  }
+
+  ingress_security_rules {
     description = "Load balancer to worker nodes node TCP ports"
     source      = "0.0.0.0/0"
     protocol    = local.protocol_numbers["TCP"]
