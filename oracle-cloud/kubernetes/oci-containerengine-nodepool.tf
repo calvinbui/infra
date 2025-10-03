@@ -21,6 +21,8 @@ resource "oci_containerengine_node_pool" "main" {
       pod_subnet_ids    = [oci_core_subnet.pods.id]
       max_pods_per_node = min((((4 / local.nodepool_size) == 1 ? 2 : (4 / local.nodepool_size)) - 1) * 31, 110)
     }
+
+    is_pv_encryption_in_transit_enabled = true
   }
 
   node_shape = "VM.Standard.A1.Flex"
@@ -40,6 +42,10 @@ resource "oci_containerengine_node_pool" "main" {
     ])[0], null)
 
     boot_volume_size_in_gbs = 200 / local.nodepool_size
+  }
+
+  node_metadata = {
+    user_data                      = base64encode(file("init.sh"))
   }
 }
 
