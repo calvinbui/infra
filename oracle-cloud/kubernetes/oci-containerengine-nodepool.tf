@@ -46,6 +46,7 @@ resource "oci_containerengine_node_pool" "main" {
 
   node_metadata = {
     user_data                      = base64encode(file("init.sh"))
+    areLegacyImdsEndpointsDisabled = true
   }
 }
 
