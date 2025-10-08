@@ -2,7 +2,7 @@ resource "oci_containerengine_cluster" "main" {
   # 1. Create cluster
   name               = "${local.name}-cluster"
   compartment_id     = oci_core_vcn.main.compartment_id
-  kubernetes_version = "v1.33.1"
+  kubernetes_version = "v1.34.1"
 
   image_policy_config {
     is_policy_enabled = false
